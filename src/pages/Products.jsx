@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom';
 import styled from 'styled-components'
+import { ProductsContext } from '../ProductProvider';
 import { Mobile, Tablet } from '../Responsive';
 
 const Section = styled.div`
@@ -97,24 +98,27 @@ const Button = styled.button`
 
 const Products = ({products}) => {
 
+  // const gettingProducts = useContext(ProductsContext);
+
   return ( 
-    <Section>
+
+<Section>
         <Container>
-            {products.map((product) =>(
-                <ProductContainer key={product.id}>
+          {products.map((item) => (
+                <ProductContainer key={item.id}>
             <Left>
-                <Picture alt={product.name}>
-                    <Source media='(max-width: 375px)' srcSet={product.categoryImage.mobile}/>
-                    <Source media='(max-width: 768px)' srcSet={product.categoryImage.tablet}/>
-                    <Source media='(min-width: 769px)' srcSet={product.categoryImage.desktop}/>
-                    <Image src={product.categoryImage.desktop} alt={product.name}/>
+                <Picture>
+                    <Source media='(max-width: 375px)' srcSet={item.categoryImage.mobile} />
+                    <Source media='(max-width: 768px)' srcSet={item.categoryImage.tablet} />
+                    <Source media='(min-width: 769px)' srcSet={item.categoryImage.desktop} />
+                    <Image src={item.image.desktop} alt={item.name}/>
                 </Picture>
             </Left>
-            <Right>
-                <Overline>{product.new ? "New Product" : ""}</Overline>
-                <Title>{product.name}</Title>
-                <Desc>{product.description}</Desc>
-                <Link to={`/productdetail/${product.slug}`}>
+            <Right> 
+                <Overline>{item.new ? "New Product" : ""}</Overline>
+                <Title>{item.name}</Title>
+                <Desc>{item.description}</Desc>
+                <Link to={`/productdetail/${item.slug}`}>
                   <Button>See Product</Button>
                 </Link>
             </Right>
@@ -122,6 +126,35 @@ const Products = ({products}) => {
                     ))}
         </Container>
     </Section>
+
+
+
+
+
+    // <Section>
+    //     <Container>
+    //         {products.map((product) =>(
+    //             <ProductContainer key={product.id}>
+    //         <Left>
+    //             <Picture alt={product.name}>
+    //                 <Source media='(max-width: 375px)' srcSet={product.categoryImage.mobile}/>
+    //                 <Source media='(max-width: 768px)' srcSet={product.categoryImage.tablet}/>
+    //                 <Source media='(min-width: 769px)' srcSet={product.categoryImage.desktop}/>
+    //                 <Image src={product.categoryImage.desktop} alt={product.name}/>
+    //             </Picture>
+    //         </Left>
+    //         <Right>
+    //             <Overline>{product.new ? "New Product" : ""}</Overline>
+    //             <Title>{product.name}</Title>
+    //             <Desc>{product.description}</Desc>
+    //             <Link to={`/productdetail/${product.slug}`}>
+    //               <Button>See Product</Button>
+    //             </Link>
+    //         </Right>
+    //         </ProductContainer>
+    //                 ))}
+    //     </Container>
+    // </Section>
   )
 }
 

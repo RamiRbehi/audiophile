@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
+import { ProductsContext } from '../../ProductProvider'
 import { Mobile, Tablet } from '../../Responsive'
 
 const Section = styled.div`
@@ -85,20 +87,30 @@ const ListBox = styled.li`
 `
 
 
-const Features = ({Detail}) => {
+const Features = () => {
+
+const {slug} = useParams();        
+    const gettingProducts = useContext(ProductsContext);
+    const productInfo = gettingProducts.find(
+        (item) => item.slug === slug);
+    
+        if (!productInfo) {
+            return <div>Features not found</div>;
+          }
+
   return (
     <Section>
         <Container>
             <FeaturesCard>
             <Left>
                 <Title>Features</Title>
-                <Desc>{Detail.features}</Desc>
+                <Desc>{productInfo.features}</Desc>
             </Left>
             <Right>
                 <Title>In the Box</Title>
                 <FeatureList>
-                    {Detail.includes.map((item) => (
-                        <Box key={item.id}>
+                    {productInfo.includes.map((item) => (
+                        <Box key={item.includeID}>
                         <ListBox>
                         <Span color="red">{item.quantity} x</Span>
                         <Span margin="space">{item.item}</Span>

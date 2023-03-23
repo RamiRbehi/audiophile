@@ -1,8 +1,8 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import CheckmarkIcon from '../assets/checkout/icon-order-confirmation.svg'
-import testImage from "../assets/shared/desktop/image-xx99-mark-one-headphones.jpg" 
+import CheckmarkIcon from '/assets/checkout/icon-order-confirmation.svg'
 import { Mobile, Tablet } from '../Responsive'
 
 const Section =styled.div`
@@ -27,16 +27,18 @@ const Container =styled.div`
     justify-content: center;
     flex-direction: column;
     justify-content: space-between;
-    width: 90vw;
+    width: 50vmax;
     height: 70vh;
     background-color: #ffffff;
     border-radius: 10px;
     padding: 30px;
 
-    ${Tablet({width: "80%",
+    ${Tablet({
+      // width: "80%",
       height: "80vh"})}
 
-    ${Mobile({height: "90vh",
+    ${Mobile({
+      // height: "90vh",
       width: "70%"})}
 `
 const ThankTitle =styled.div`
@@ -168,6 +170,10 @@ const Button =styled.button`
 `
 
 const ThankCard = () => {
+
+  const cart = useSelector(state => state.cart);
+  const productsAdded = useSelector(state => state.cart.quantity)
+
   return (
     <Section>
         <Container>
@@ -176,25 +182,28 @@ const ThankCard = () => {
             <Title>THANK YOU FOR YOUR ORDER</Title>
             <ThankQuote>You will revieve an email confirmation shortly</ThankQuote>
           </ThankTitle>
-          <ProductAddedDetails>
+
+            <ProductAddedDetails>
+          {cart.products.map((product) => (
             <Left>
               <ProductsAdded>
                 <ProductImage src={testImage}/>
                 <Content>
-                  <ProductName>Product Name</ProductName>
-                  <ProductPrice>$ 2,999</ProductPrice>
+                  <ProductName>{product.name}</ProductName>
+                  <ProductPrice>$ {product.price}</ProductPrice>
                 </Content>
-                <ProductQuantity>x1</ProductQuantity>
+                <ProductQuantity>x{product.quantity}</ProductQuantity>
               </ProductsAdded>
               
               <Break/>
 
-              <RestProducts>And 2 other item(s)</RestProducts>
+              <RestProducts>And {productsAdded} other item(s)</RestProducts>
             </Left>
+              ))}
             <Right>
               <CalcDiv paddingTop='space'>
                <SubHeader>GRAND TOTAL</SubHeader>
-               <Price>$ 5,446</Price>
+               <Price>$ {(cart.total && (cart.total + cart.total * 0.2 + cart.shipping).toFixed(2)) || 0}</Price>
               </CalcDiv>
             </Right>
           </ProductAddedDetails>

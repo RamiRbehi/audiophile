@@ -1,5 +1,5 @@
-import React from 'react'
-import { useParams } from 'react-router-dom'
+import React, { useContext } from 'react'
+import { useLocation, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import Categories from '../components/Categories'
 import Footer from '../components/Footer'
@@ -9,7 +9,8 @@ import Features from '../components/ProductInformation/Features'
 import Gallery from '../components/ProductInformation/Gallery'
 import OtherProducts from '../components/ProductInformation/OtherProducts'
 import ProductInformation from '../components/ProductInformation/ProductInformation'
-import productsDetailed from "../data.json";
+import { ProductsContext } from '../ProductProvider'
+// import productsDetailed from "../data.json";
 
 const Section = styled.div`
     width: 100%;
@@ -20,19 +21,44 @@ const Container = styled.div`
   gap: 70px;
 `
 
+// const {slug} = useParams();
+
+// const gettingProducts = useContext(ProductsContext);
+// const Detail = gettingProducts.find(
+//   (p) => p.slug === slug); 
 const ProductDetail = () => {
-  const {slug} = useParams();
-  const Detail = productsDetailed.find(
-    (p) => p.slug === slug);
+
+  // const gettingProducts = useContext(ProductsContext);
+  // const {productSlug} = useParams();
+
+  // if (!gettingProducts || gettingProducts.length === 0) {
+  //   return <p>No products found...</p>
+  // }
+
+  // const productInfo = gettingProducts.find(
+  //   item => item.slug === productSlug
+  // );
+
+  // if  (!productInfo) {
+  //   return <p>Product not found...</p>
+  // }
+
+  // console.log(gettingProducts);
+  // console.log("productSlug", productSlug);
+  // console.log("productInfo", productInfo);
+
+  // const {state: {productInfo}} = useLocation();
+
+
 
   return ( 
-    <Section>
+    <Section> 
         <Container>
             <Navbar bgColor="#000000"/>
-                <ProductInformation Detail={Detail}/>
-                <Features Detail={Detail}/>
-                <Gallery Detail={Detail}/>
-                <OtherProducts Detail={Detail}/>
+                <ProductInformation/>
+                <Features/>
+                <Gallery/>
+                <OtherProducts/>
             <Categories/>
             <Presentation/>
             <Footer/>

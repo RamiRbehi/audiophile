@@ -1,6 +1,7 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useContext } from 'react'
+import { Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
+import { ProductsContext } from '../../ProductProvider'
 import { Mobile, Tablet } from '../../Responsive'
 
 const Section = styled.div`
@@ -80,16 +81,26 @@ const Button = styled.button`
 
   &:active{
     background-color: #FBAF85;
-    }
+    } 
 `
 
-const OtherProducts = ({Detail}) => {
+const OtherProducts = () => {
+
+    const {slug} = useParams();        
+    const gettingProducts = useContext(ProductsContext);
+    const productInfo = gettingProducts.find(
+        (item) => item.slug === slug);
+    
+        if (!productInfo) {
+            return <div>other products not found</div>;
+          }
+
   return (
     <Section>
         <Container>
             <Title>You may also like</Title>
             <OthersContainer>
-                {Detail.others.map((other) => (
+                {productInfo.others.map((other) => (
                     <ProductContainer key={other.name}>
                         <Picture>
                             <Source media='(max-width: 375px)' srcSet={other.image.mobile}  alt={other.name}/>

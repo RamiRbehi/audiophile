@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
-import testImage from "../../assets/shared/desktop/image-xx99-mark-one-headphones.jpg"
 import { Mobile, Tablet } from '../../Responsive'
 import ThankCard from '../ThankCard'
 
@@ -114,13 +114,12 @@ const Summary = () => {
 
   const [clicked, setClicked] = useState(false);
   const [cartVisible, setCartVisible] = useState(false);
+  const cart = useSelector(state => state.cart);
 
   const handleClick = () => {
       //  setClicked(true);
        setCartVisible(true);
     };
-
-    console.log(cartVisible);
 
   return (
     <SummaryDiv>
@@ -130,68 +129,43 @@ const Summary = () => {
               )}
 
 
-          <ProductsAdded>
+        {cart.products.map((product) => (
+          
+          <ProductsAdded key={product.id}>
             {/* <Picture> */}
               {/* <Source/>
               <Source/> */}
-              <ProductImage src={testImage}/>
+              <ProductImage src={product.image}/>
             {/* </Picture> */}
 
             <Content>
-              <ProductName>Product Name</ProductName>
-              <ProductPrice>$ 2,999</ProductPrice>
+              <ProductName>{product.name}</ProductName>
+              <ProductPrice>$ {product.price}</ProductPrice>
             </Content>
 
-            <ProductQuantity>x1</ProductQuantity>
+            <ProductQuantity>x{product.quantity}</ProductQuantity>
           </ProductsAdded>
+              ))}
 
-          <ProductsAdded>
-            {/* <Picture> */}
-              {/* <Source/>
-              <Source/> */}
-              <ProductImage src={testImage}/>
-            {/* </Picture> */}
 
-            <Content>
-              <ProductName>Product Name</ProductName>
-              <ProductPrice>$ 2,999</ProductPrice>
-            </Content>
-
-            <ProductQuantity>x1</ProductQuantity>
-          </ProductsAdded>
-
-          <ProductsAdded>
-            {/* <Picture> */}
-              {/* <Source/>
-              <Source/> */}
-              <ProductImage src={testImage}/>
-            {/* </Picture> */}
-
-            <Content>
-              <ProductName>Product Name</ProductName>
-              <ProductPrice>$ 2,999</ProductPrice>
-            </Content>
-
-            <ProductQuantity>x1</ProductQuantity>
-          </ProductsAdded>
 
           <CalcPrices>
             <CalcDiv>
               <SubHeader>TOTAL</SubHeader>
-              <Price>$ 5369</Price>
+              <Price>$ {cart.total}</Price>
             </CalcDiv>
             <CalcDiv>
               <SubHeader>SHIPPING</SubHeader>
-              <Price>$ 50</Price>
+              <Price>$ {cart.shipping}</Price>
             </CalcDiv>
             <CalcDiv>
               <SubHeader>VAT (INCLUDED)</SubHeader>
-              <Price>$ 1079</Price>
+              <Price>$ {(cart.total && (cart.total * 0.2).toFixed(2)) || 0}</Price>
             </CalcDiv>
 
             <CalcDiv paddingTop='space'>
               <SubHeader>GRAND TOTAL</SubHeader>
-              <Price color='orange'>$ 5446</Price>
+              <Price color='orange'>$ {(cart.total && (cart.total + cart.total * 0.2 + cart.shipping).toFixed(2)) || 0}</Price>
             </CalcDiv>
           </CalcPrices>
               

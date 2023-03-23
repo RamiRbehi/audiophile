@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import LogoImage from '../assets/shared/desktop/logo.svg'
-import CartIcon from '../assets/shared/desktop/icon-cart.svg'
+import LogoImage from '/assets/shared/desktop/logo.svg'
+import CartIcon from '/assets/shared/desktop/icon-cart.svg'
 import { Link, NavLink } from 'react-router-dom'
 import CartCard from './CartCard'
 import { Mobile, Tablet } from '../Responsive'
-import Hamburger from "../assets/shared/tablet/icon-hamburger.svg"
+import Hamburger from "/assets/shared/tablet/icon-hamburger.svg"
 import CategoriesResponsive from './CategoriesResponsive'
 
 const Section = styled.div` 
@@ -100,8 +100,6 @@ const Navbar = (props) => {
         setToggleClicked(false)
     }
 
-    console.log(toggleClicked);
-    console.log(categoriesVisible);
 
   return (
     <Section>

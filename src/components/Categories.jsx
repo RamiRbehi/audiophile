@@ -1,10 +1,13 @@
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import Headphones from "../assets/shared/desktop/image-category-thumbnail-headphones.png"
-import Speakers from "../assets/shared/desktop/image-category-thumbnail-speakers.png"
-import Earphones from "../assets/shared/desktop/image-category-thumbnail-earphones.png"
-import Icon from "../assets/shared/desktop/icon-arrow-right.svg"
+import Headphones from "/assets/shared/desktop/image-category-thumbnail-headphones.png"
+import Speakers from "/assets/shared/desktop/image-category-thumbnail-speakers.png"
+import Earphones from "/assets/shared/desktop/image-category-thumbnail-earphones.png"
+import Icon from "/assets/shared/desktop/icon-arrow-right.svg"
 import { Mobile, Tablet } from '../Responsive'
+import { useContext } from 'react'
+import { ProductsContext } from '../ProductProvider'
+import { categoryImages } from '../data'
 
 
 const Section = styled.div`
@@ -13,7 +16,7 @@ const Section = styled.div`
   justify-content: center;
   
 `
-const Container = styled.div`
+const Container = styled.div` 
   width: calc(100% - 250px);
   /* width: 100vmax; */
   display: flex;
@@ -43,9 +46,9 @@ const Products = styled.div`
 const Category = styled.div`
   width: 25vw;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
   background-color: #f1f1f1;
   position: relative;
   gap: 20px;
@@ -53,6 +56,12 @@ const Category = styled.div`
   padding: 30px 0;
 
   ${Mobile({width: "80vw",})}
+`
+const ImagesContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 `
 const Image = styled.img`
   width: 60%;
@@ -117,12 +126,14 @@ const Categories = () => {
   //       setSlugName(extractedData);
   //   }, []);
 
+  const gettingProducts = useContext(ProductsContext);
+
 return (
   <Section>
       <Container>
-        <Products>
+
         <Link style={none} to={`/productcategory/headphones`}>
-            <Category>
+          <Category>
                 <Image src={Headphones} alt="headphones"/>
             <Title>Headphones</Title>
             <ButtonContainer>
@@ -130,7 +141,7 @@ return (
             <IconArrow src={Icon}/>
             </ButtonContainer>
           </Category>
-      </Link>
+          </Link>
 
       <Link style={none} to={`/productcategory/speakers`}>
           <Category>
@@ -153,7 +164,7 @@ return (
             </ButtonContainer>
           </Category>
           </Link>
-        </Products>
+       
       </Container>
     </Section>
   )

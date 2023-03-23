@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import testImage from "../assets/shared/desktop/image-xx99-mark-one-headphones.jpg"
+import { removeAllPrducts, updateProductQuantity } from '../redux/cartRedux'
 import { Mobile, Tablet } from '../Responsive'
 
 const Section = styled.div`
@@ -160,44 +161,53 @@ const none = {
 }
 
 const CartCard = () => {
+    // const [quantity, setQuantity] = useState(1);
+    const cart = useSelector(state => state.cart);
+    const productsAdded = useSelector(state => state.cart.quantity)
+    const dispatch = useDispatch();
 
-    const [quantity, setQuantity] = useState(1);
-
-    const HandleQuantity = (type) => {
+    const HandleQuantity = (type, id, quantity) => {
         if (type === "dec") {
-            quantity > 1 && setQuantity(quantity - 1);
+            quantity > 1 && dispatch(updateProductQuantity({id, quantity: quantity - 1}));
         } else {
-            setQuantity(quantity + 1);
+            dispatch(updateProductQuantity({id, quantity: quantity + 1}));
         }
-    }
- 
+    };
+
+    const handleRemoveAll = () => {
+        dispatch(removeAllPrducts());
+    };
+
   return (
     <Section>
         <Container>
             <Top>
-                <ProductNumber>CART (3)</ProductNumber>
-                <RemoveButton>Remove all</RemoveButton>
+                <ProductNumber>CART ({productsAdded})</ProductNumber>
+                <RemoveButton onClick={handleRemoveAll}>Remove all</RemoveButton>
             </Top>
-            <Center>
-                <ProductAdded>
-                    <ProductImage src={testImage}/>
+                {cart.products.map((product) => (
+            <Center key={product.id}>
+
+                    <ProductAdded>
+                    <ProductImage src={product.image}/>
                         <Content>
-                            <ProductName>Product Name</ProductName>
-                            <ProductPrice>$ 2.999</ProductPrice>
+                            <ProductName>{product.name}</ProductName>
+                            <ProductPrice>$ {product.price*product.quantity}</ProductPrice>
                         </Content>
                     <AddContainer>
-                        <AmountContainer>
-                            <MinusPlus onClick={() => HandleQuantity("dec")}>-</MinusPlus>
-                            <Amount>{quantity}</Amount>
-                            <MinusPlus onClick={() => HandleQuantity("inc")}>+</MinusPlus>
+                        <AmountContainer key={product.quantity}>
+                            <MinusPlus onClick={() => HandleQuantity("dec", product.id, product.quantity)}>-</MinusPlus>
+                            <Amount>{product.quantity}</Amount>
+                            <MinusPlus onClick={() => HandleQuantity("inc", product.id, product.quantity)}>+</MinusPlus>
                         </AmountContainer>
                     </AddContainer>
                 </ProductAdded>
             </Center>
+                    ))}
             <Bottom>
                 <TotalContainer>
                     <Total>TOTAL</Total>
-                    <TotalPrice>$ 5.396</TotalPrice>
+                    <TotalPrice>$ {cart.total}</TotalPrice>
                 </TotalContainer>
                 <Link style={none} to="/checkout">
                     <CheckoutButton>CHECKOUT</CheckoutButton>

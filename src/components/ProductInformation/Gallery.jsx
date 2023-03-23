@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
+import { ProductsContext } from '../../ProductProvider'
 import { Mobile, Tablet } from '../../Responsive'
 
 const Section = styled.div`
@@ -63,34 +65,44 @@ const LargeImage = styled.img`
     ${Tablet({height: "96%"})}
 `
 
-const Gallery = ({Detail}) => {
-  return (
+const Gallery = () => {
+
+  const {slug} = useParams();        
+    const gettingProducts = useContext(ProductsContext);
+    const productInfo = gettingProducts.find(
+        (item) => item.slug === slug);
+    
+        if (!productInfo) {
+            return <div>Features not found</div>;
+          }
+
+  return ( 
     <Section>
       <GalleryImages>
         <LeftImages>
               <SmallImgDiv>
                 <SmallPiture>
-                  <SmallSource media='(max-width: 375px)' srcSet={Detail.gallery.first.mobile}/>
-                  <SmallSource media='(max-width: 768px)' srcSet={Detail.gallery.first.tablet}/>
-                  <SmallSource media='(min-width: 769px)' srcSet={Detail.gallery.first.desktop}/>
-        <SmallImage src={Detail.gallery.first.desktop}/>
+                  <SmallSource media='(max-width: 375px)' srcSet={productInfo.gallery.first.mobile}/>
+                  <SmallSource media='(max-width: 768px)' srcSet={productInfo.gallery.first.tablet}/>
+                  <SmallSource media='(min-width: 769px)' srcSet={productInfo.gallery.first.desktop}/>
+        <SmallImage src={productInfo.gallery.first.desktop}/>
                 </SmallPiture>
             </SmallImgDiv>
             <SmallImgDiv>
               <SmallPiture>
-                <SmallSource media='(max-width: 375px)' srcSet={Detail.gallery.second.mobile}/>
-                <SmallSource media='(max-width: 768px)' srcSet={Detail.gallery.second.tablet}/>
-                <SmallSource media='(min-width: 769px)' srcSet={Detail.gallery.second.desktop}/>
-          <SmallImage src={Detail.gallery.second.desktop}/>
+                <SmallSource media='(max-width: 375px)' srcSet={productInfo.gallery.second.mobile}/>
+                <SmallSource media='(max-width: 768px)' srcSet={productInfo.gallery.second.tablet}/>
+                <SmallSource media='(min-width: 769px)' srcSet={productInfo.gallery.second.desktop}/>
+          <SmallImage src={productInfo.gallery.second.desktop}/>
               </SmallPiture>
              </SmallImgDiv>
            </LeftImages>
         <LargeImgDiv>
           <LargePiture>
-            <LargeSource media='(max-width: 375px)' srcSet={Detail.gallery.third.mobile}/>
-            <LargeSource media='(max-width: 768px)' srcSet={Detail.gallery.third.tablet}/>
-            <LargeSource media='(min-width: 769px)' srcSet={Detail.gallery.third.desktop}/>
-            <LargeImage src={Detail.gallery.third.desktop}/>
+            <LargeSource media='(max-width: 375px)' srcSet={productInfo.gallery.third.mobile}/>
+            <LargeSource media='(max-width: 768px)' srcSet={productInfo.gallery.third.tablet}/>
+            <LargeSource media='(min-width: 769px)' srcSet={productInfo.gallery.third.desktop}/>
+            <LargeImage src={productInfo.gallery.third.desktop}/>
           </LargePiture>
         </LargeImgDiv>
     </GalleryImages>

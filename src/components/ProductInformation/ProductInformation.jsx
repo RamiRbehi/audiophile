@@ -1,7 +1,11 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
+import { ProductsContext } from '../../ProductProvider'
+import { addProduct } from '../../redux/cartRedux'
 import { Mobile, Tablet } from '../../Responsive'
+import CartCard from '../CartCard'
 
 const Section = styled.div`
     width: 100%;
@@ -124,48 +128,72 @@ const Add2Cart = styled.button`
     }
 `
 
-
-const ProductInformation = ({Detail}) => {
-
-    const [quantity, setQuantity] = useState(1);
+const ProductInformation = () => {
+    const gettingProducts = useContext(ProductsContext);
+    const {slug} = useParams();        
+    const productInfo = gettingProducts.find(
+        (item) => item.slug === slug);
+    
+        if (!productInfo) {
+            return <div>Product not found</div>;
+          }
+    
+    const dispatch = useDispatch();
+    const [product, setProduct] = useState({
+        name: productInfo.name,
+        price: productInfo.price,
+        image: productInfo.image.desktop,
+        quantity: 1,
+    });
     const navigate = useNavigate();
 
-    const HandleQuantity = (type) => {
+  
+
+    const HandleQuantity = useCallback((type) => {
         if (type === "dec") {
-            quantity > 1 && setQuantity(quantity - 1);
+            product.quantity > 1 &&
+                setProduct({...product, quantity: product.quantity - 1});
         } else {
-            setQuantity(quantity + 1);
+            setProduct({...product, quantity: product.quantity + 1});
         }
-    }  
+    },
+    [product]
+    );
 
     
-  return (
+    const handleClick =  () => {
+        dispatch(addProduct(product));
+    };
+          
+        
+          return (
     <Section>
         <Container>
             <ButtonDiv>
                 <Button onClick={() => navigate(-1)}>Go Back</Button> 
             </ButtonDiv>
+
                 <ProductDetails>
                 <Left>
                     <Picture>
-                        <Source media='(max-width: 375px)' srcSet={Detail.image.mobile}/>
-                        <Source media='(max-width: 768px)' srcSet={Detail.image.tablet}/>
-                        <Source media='(min-width: 769px)' srcSet={Detail.image.desktop}/>
-                        <Image src={Detail.image.desktop} alt={Detail.name}/>
+                        <Source media='(max-width: 375px)' srcSet={productInfo.image.mobile}/>
+                        <Source media='(max-width: 768px)' srcSet={productInfo.image.tablet}/>
+                        <Source media='(min-width: 769px)' srcSet={productInfo.image.desktop}/>
+                        <Image src={productInfo.image.desktop} alt={productInfo.name}/>
                     </Picture>
                 </Left>
                 <Right>
-                    <Overline>{Detail.new ? "New Product" : ""}</Overline>
-                    <Title>{Detail.name}</Title>
-                    <Desc>{Detail.description}</Desc>
-                    <Price>$ {Detail.price}</Price>
+                    <Overline>{productInfo.new ? "New Product" : ""}</Overline>
+                    <Title>{productInfo.name}</Title>
+                    <Desc>{productInfo.description}</Desc>
+                    <Price>$ {productInfo.price}</Price>
                     <AddContainer>
                         <AmountContainer>
                             <MinusPlus onClick={() => HandleQuantity("dec")}>-</MinusPlus>
-                            <Amount>{quantity}</Amount>
+                            <Amount>{product.quantity}</Amount>
                             <MinusPlus onClick={() => HandleQuantity("inc")}>+</MinusPlus>
                         </AmountContainer>
-                            <Add2Cart>Add to Cart</Add2Cart>
+                            <Add2Cart onClick={handleClick}>Add to Cart</Add2Cart>
                     </AddContainer>
                 </Right>
             </ProductDetails>

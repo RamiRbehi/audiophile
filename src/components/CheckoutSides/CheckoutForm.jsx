@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import cashOnDelivery from '../../assets/checkout/icon-cash-on-delivery.svg'
+import cashOnDelivery from '/assets/checkout/icon-cash-on-delivery.svg'
 import { Mobile, Tablet } from '../../Responsive'
 
 const CheckoutDiv = styled.div`
@@ -126,6 +126,7 @@ const CheckoutForm = () => {
   const [emailError, setEmailError] = useState("");
   const [clickedInput, setClickedInput] = useState(false);
   const [cashDesliveryVisible , setCashDesliveryVisible] = useState(false);
+  const [emoneyInputVisible, setEmoneyInputVisible] = useState(false);
 
   const handleEmailChange = (e) => {
     const value = e.target.value;
@@ -142,10 +143,14 @@ const CheckoutForm = () => {
   const handleClick = () => {
     // setClickedInput(clickedInput);
     setCashDesliveryVisible(true);
+    setEmoneyInputVisible(false);
+    
   };
+  
 
-  const handleClose = () => {
+  const handleClickEmoney = () => {
     // setClickedInput(clickedInput);
+    setEmoneyInputVisible(true);
     setCashDesliveryVisible(false);
   };
 
@@ -203,7 +208,9 @@ const CheckoutForm = () => {
             <Options>
               <FormCheckbox>
                 <LabelCheckbox>
-                 <CheckboxInput onClick={handleClose} type="radio" name="radio" value="emoney"/>
+                  {!clickedInput && 
+                 <CheckboxInput onClick={handleClickEmoney} type="radio" name="radio" value="emoney"/>
+                }
                    e-Money
                </LabelCheckbox>
 
@@ -216,7 +223,7 @@ const CheckoutForm = () => {
               </FormCheckbox>
             </Options>
           </PaymentOptions>
-
+          {emoneyInputVisible && 
               <CardInfo>
                 <Form>
                   <Label>e-Money Number</Label>
@@ -227,6 +234,7 @@ const CheckoutForm = () => {
                   <Input type="password" maxLength={6} required inputMode='numeric'/>
                 </Form>
               </CardInfo>
+              }
 
           {cashDesliveryVisible && 
              <CashOnDeliveryDiv>

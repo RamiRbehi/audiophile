@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { zx9 } from '../../data'
-import PatternCircle from "../../assets/home/desktop/pattern-circles.svg"
+import PatternCircle from "/assets/home/desktop/pattern-circles.svg"
 import { Link } from 'react-router-dom'
 import { Mobile, Tablet } from '../../Responsive'
 

@@ -10,6 +10,9 @@ import {
 import CartCard from "./components/CartCard";
 import Checkout from "./pages/Checkout";
 import ThankCard from "./components/ThankCard";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
+import { ProductProvider } from "./ProductProvider";
 
 const Container = styled.div`
     height: 100%;
@@ -28,16 +31,20 @@ const Container = styled.div`
 function App() {
 
   return (
+    <Provider store={store}>
     <Container>
       <Router>
+      <ProductProvider>
         <Routes>
           <Route exact path="/*" element={<Home/>}/>
           <Route path="/productcategory/:slug" element={<ProductCategory/>}/>
           <Route path="/productdetail/:slug" element={<ProductDetail/>}/>
           <Route path="/checkout" element={<Checkout/>}/>
         </Routes>
+      </ProductProvider>
       </Router>
     </Container>
+    </Provider>
   )
 }
 

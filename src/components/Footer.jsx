@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import LogoImage from '../assets/shared/desktop/logo.svg'
-import Facebook from "../assets/shared/desktop/icon-facebook.svg"
-import Twitter from "../assets/shared/desktop/icon-twitter.svg"
-import Instagram from "../assets/shared/desktop/icon-instagram.svg"
+import LogoImage from '/assets/shared/desktop/logo.svg'
+import Facebook from "/assets/shared/desktop/icon-facebook.svg"
+import Twitter from "/assets/shared/desktop/icon-twitter.svg"
+import Instagram from "/assets/shared/desktop/icon-instagram.svg"
 import { NavLink } from 'react-router-dom'
 import { Mobile, Tablet } from '../Responsive'
 
@@ -15,7 +15,6 @@ const Section = styled.div`
 `
 const Container = styled.div`
   width: calc(100% - 250px);
-  /* height: 50vh; */
   padding: 50px 0;
   display: flex;
   flex-direction: column;
@@ -25,7 +24,7 @@ const Container = styled.div`
   ${Tablet({padding: "60px 0"})}
 
   ${Mobile({width: "calc(100% - 50px)",
-  gap: 40,
+  gap: 20,
   padding: "40px 0"})}
 `
 const Top = styled.div`
@@ -42,6 +41,7 @@ const Top = styled.div`
   })}
 
   ${Mobile({alignItems: "center",
+    gap: 30,
     paddingTop: 20})}
 `
 const Break = styled.hr`
@@ -138,10 +138,12 @@ const IconContainer = styled.div`
 `
 const Icons = styled.img`
   cursor: pointer;
+  transition: all 0.3s ease;
 
   &:hover{
     color: #D87D4A;
     }
+   
 `
 
 const none = {
@@ -168,7 +170,8 @@ const Footer = () => {
         </Center>
         <Bottom>
           <Copyright>Copyright 2021. All Rights Reserved</Copyright>
-          <IconContainer>
+         
+            <IconContainer>
             <Icons src={Facebook}/>
             <Icons src={Twitter}/>
             <Icons src={Instagram}/>

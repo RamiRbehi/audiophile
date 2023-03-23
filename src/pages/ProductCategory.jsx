@@ -4,9 +4,11 @@ import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
 import Presentation from '../components/Presentation'
 import Products from './Products'
-import { useParams } from 'react-router-dom'
-import products from "../data.json";
+import { useLocation, useParams } from 'react-router-dom'
+// import products from "../data.json";
 import { Mobile, Tablet } from '../Responsive'
+import { useContext, useEffect, useState } from 'react'
+import { ProductsContext } from '../ProductProvider'
 
 const Section = styled.div`
   width: 100%;
@@ -35,24 +37,46 @@ const Title = styled.h1`
   ${Tablet({fontSize: 28,})}
 `
 
-const ProductCategory = () => {
 
-  const {slug} =useParams();
-  const category = slug.replace("-", " ");
-  const categoryProducts = products.filter(
+const ProductCategory = () => {
+  const gettingProducts = useContext(ProductsContext);
+  // const [selectedCategory, setSelectedCategory] = useState('all');
+
+  // const filteredProducts = gettingProducts.filter(
+  //   (item) =>
+  //     selectedCategory === 'all' ||
+  //     item.category === selectedCategory
+  // );
+
+  // const handleCategoryChange = (category) => {
+  //   setSelectedCategory(category.toLowerCase());
+  // };
+
+    const {slug} =useParams();
+  const category = slug ? slug.replace("-", " ") : "";
+  const categoryProducts = gettingProducts.filter(
     (product) => product.category === category
 );
-
-  
+console.log(category);
+console.log(gettingProducts);
+console.log(categoryProducts);
   return (
     <Section>
       <Container>
+
           <IntroContainer>
               <Navbar/>
-              <Title>{category}</Title>
+              <Title>
+                {category}
+              </Title>
           </IntroContainer>
-          <Products products={categoryProducts}/>
-            <Categories/>
+          <Products
+          products={categoryProducts}
+          />
+            <Categories
+            // selectedCategory={selectedCategory}
+            // onCategoryChange={handleCategoryChange}
+            />
             <Presentation/>
             <Footer/>
       </Container>
